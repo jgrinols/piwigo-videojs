@@ -88,9 +88,13 @@ if (isset($general['bit_rate']))
 {
 	$exif['bitrate'] = (string)$general['bit_rate'];
 }
-if (isset($general['tags']['creation_time']))
+if (!isset($exif['date_creation']) and isset($general['tags']['creation_time']))
 {
-	$exif['date_creation'] = date('Y-m-d H:i:s', strtotime((string)$general['tags']['creation_time']));
+    $ts = strtotime((string)$general['tags']['creation_time']);
+    if ($ts >= 0)
+    {
+        $exif['date_creation'] = date('Y-m-d H:i:s', $ts);
+    }
 }
 if (isset($general['tags']['location']))
 {
