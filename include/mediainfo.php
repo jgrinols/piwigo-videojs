@@ -133,13 +133,22 @@ if (isset($general->Make) or isset($general->comapplequicktimemake)) //Not prese
 {
     isset($general->Make) ? $exif['make'] = (string)$general->Make : $exif['make'] = (string)$general->comapplequicktimemake;
 }
-if (isset($general->Recorded_Date))
+if (!isset($exif['date_creation']) and isset($general->Recorded_Date))
 {
-    $exif['date_creation'] = (string)$general->Recorded_Date;
+	$ts = strtotime((string)$general->Recorded_Date);
+	if ($ts >= 0)
+	{
+		$exif['date_creation'] = date('Y-m-d H:i:s', $ts);
+	}
 }
 if (!isset($exif['date_creation']) and isset($general->Encoded_Date))
 {// http://piwigo.org/forum/viewtopic.php?pid=158021#p158021
     $exif['date_creation'] = date('Y-m-d H:i:s', strtotime((string)$general->Encoded_Date));
+	$ts = strtotime((string)$general->Encoded_Date);
+	if ($ts >= 0)
+	{
+		$exif['date_creation'] = date('Y-m-d H:i:s', $ts);
+	}
 }
 
 
