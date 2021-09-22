@@ -65,9 +65,21 @@ if (isset($general['AvgBitrate']))
 {
 	$exif['bitrate'] = (string)$general['AvgBitrate'];
 }
-if (isset($general['MediaCreateDate']))
+if (!isset($exif['date_creation']) and isset($general['MediaCreateDate']))
 {
-	$exif['date_creation'] = date('Y-m-d H:i:s', strtotime((string)$general['MediaCreateDate']));
+	$ts = strtotime((string)$general['MediaCreateDate']);
+	if ($ts >= 0)
+	{
+		$exif['date_creation'] = date('Y-m-d H:i:s', $ts);
+	}
+}
+if (!isset($exif['date_creation']) and isset($general['CreationDate']))
+{
+	$ts = strtotime((string)$general['CreationDate']);
+	if ($ts >= 0)
+	{
+		$exif['date_creation'] = date('Y-m-d H:i:s', $ts);
+	}
 }
 if (isset($general['GPSLatitude']) and isset($general['GPSLongitude']))
 {
